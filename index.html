@@ -58,6 +58,39 @@ function setScreen() {
 	card_image.src = "images/" + words[counter]['emoji_hex'] + ".png";
 }
 
+
+
+//
+// DEVICE MOTION
+//
+
+// This function must be triggered by a user action (e.g., button click)
+function requestMotionPermission() {
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          window.addEventListener('devicemotion', handleDeviceMotion);
+        } else {
+          console.error('Device motion permission denied');
+        }
+      })
+      .catch(console.error);
+  } else {
+    // Handle non-iOS 13+ devices or browsers that don't need a permission prompt
+    window.addEventListener('devicemotion', handleDeviceMotion);
+  }
+}
+
+function handleDeviceMotion(event) {
+  // Your code to handle motion data goes here
+  console.log('Acceleration:', event.accelerationIncludingGravity.x);
+}
+window.addEventListener('devicemotion', handleDeviceMotion, false); // 'false' is the default and allows repeated calls
+
+
+
+/*
 let locked = false;
 const COOLDOWN = 1200;
 
@@ -101,5 +134,12 @@ async function startTracking() {
     window.addEventListener('deviceorientation', handleRotation);
   }
 }
+
+addEventListener("devicemotion", (event) => { })
+ondevicemotion = (event) => {
+	console.log(event);
+}
+*/
+
 </script>
 </html>
